@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Tool Marketplace — Discover, Compare & Buy the Best AI Tools</title>
+<meta name="description" content="AI Tool Marketplace is the premium marketplace to discover, compare and buy the best AI tools for writing, image, video, code, marketing and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#03040a;
+    --navy:#080b1a;
+    --navy-2:#0d1230;
+    --navy-3:#111737;
+    --purple:#7c3aed;
+    --purple-2:#a855f7;
+    --blue:#2f7bff;
+    --blue-2:#38bdf8;
+    --ink:#eef0fb;
+    --ink-dim:#9aa1c4;
+    --ink-faint:#6d7397;
+    --glass: rgba(255,255,255,0.045);
+    --glass-strong: rgba(255,255,255,0.07);
+    --glass-border: rgba(255,255,255,0.09);
+    --line: rgba(255,255,255,0.08);
+    --radius: 20px;
+    --ff-display:'Space Grotesk', sans-serif;
+    --ff-body:'Inter', sans-serif;
+    --ff-mono:'JetBrains Mono', monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--ink);
+    font-family:var(--ff-body);
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--purple);color:#fff;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+  input{font-family:inherit;}
+
+  /* ---------- Background atmosphere ---------- */
+  .bg-fixed{
+    position:fixed;inset:0;z-index:-2;
+    background:
+      radial-gradient(ellipse 900px 600px at 12% -6%, rgba(124,58,237,.30), transparent 60%),
+      radial-gradient(ellipse 900px 700px at 100% 10%, rgba(47,123,255,.22), transparent 55%),
+      radial-gradient(ellipse 800px 800px at 50% 120%, rgba(168,85,247,.18), transparent 60%),
+      linear-gradient(180deg, var(--void) 0%, var(--navy) 40%, var(--void) 100%);
+  }
+  .grid-overlay{
+    position:fixed;inset:0;z-index:-1;opacity:.35;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 40%, transparent 85%);
+  }
+  .noise{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.03;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap{max-width:1280px;margin:0 auto;padding:0 32px;}
+  section{position:relative;padding:110px 0;}
+  @media(max-width:768px){ section{padding:72px 0;} .wrap{padding:0 20px;} }
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--ff-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--blue-2);background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.22);
+    padding:6px 14px;border-radius:100px;margin-bottom:22px;
+  }
+  .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue-2);box-shadow:0 0 10px var(--blue-2);}
+
+  h1,h2,h3,h4{font-family:var(--ff-display);font-weight:700;letter-spacing:-0.02em;color:var(--ink);}
+  .section-head{max-width:640px;margin:0 auto 56px;text-align:center;}
+  .section-head h2{font-size:clamp(30px,4vw,44px);margin-bottom:14px;}
+  .section-head p{color:var(--ink-dim);font-size:17px;}
+
+  .grad-text{
+    background:linear-gradient(100deg, var(--blue-2) 0%, var(--purple-2) 55%, var(--purple) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:15px 30px;border-radius:100px;font-weight:600;font-size:15px;
+    transition:all .25s cubic-bezier(.2,.8,.2,1);white-space:nowrap;
+  }
+  .btn-primary{
+    background:linear-gradient(100deg, var(--blue) 0%, var(--purple) 100%);
+    color:#fff;box-shadow:0 8px 28px rgba(124,58,237,.35), 0 2px 8px rgba(47,123,255,.25);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(124,58,237,.5), 0 4px 14px rgba(47,123,255,.35);}
+  .btn-ghost{
+    background:var(--glass);border:1px solid var(--glass-border);color:var(--ink);backdrop-filter:blur(12px);
+  }
+  .btn-ghost:hover{background:var(--glass-strong);border-color:rgba(255,255,255,.2);transform:translateY(-2px);}
+  .btn-sm{padding:10px 20px;font-size:13px;}
+  .btn-block{width:100%;}
+
+  /* ---------- Navbar ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:18px 0;transition:all .3s ease;
+  }
+  header.scrolled{
+    padding:12px 0;background:rgba(3,4,10,.75);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--ff-display);font-weight:700;font-size:19px;}
+  .logo-mark{
+    width:34px;height:34px;border-radius:10px;position:relative;flex-shrink:0;
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    box-shadow:0 0 22px rgba(124,58,237,.55);
+  }
+  .logo-mark::after{
+    content:'';position:absolute;inset:8px;border-radius:4px;
+    background:conic-gradient(from 0deg, #fff, transparent 40%);
+    opacity:.8;
+  }
+  .nav-links{display:flex;align-items:center;gap:2px;}
+  .nav-links a{
+    padding:9px 15px;border-radius:100px;font-size:14.5px;color:var(--ink-dim);font-weight:500;
+    transition:all .2s ease;
+  }
+  .nav-links a:hover{color:var(--ink);background:var(--glass);}
+  .nav-actions{display:flex;align-items:center;gap:10px;}
+  .link-btn{padding:10px 16px;font-size:14px;color:var(--ink-dim);font-weight:600;transition:color .2s;}
+  .link-btn:hover{color:var(--ink);}
+  .burger{display:none;width:40px;height:40px;border-radius:10px;background:var(--glass);border:1px solid var(--glass-border);align-items:center;justify-content:center;flex-direction:column;gap:4px;}
+  .burger span{width:18px;height:2px;background:var(--ink);border-radius:2px;transition:.25s;}
+  @media(max-width:980px){
+    .nav-links{display:none;}
+    .nav-actions .link-btn, .nav-actions .btn-ghost{display:none;}
+    .burger{display:flex;}
+  }
+  .mobile-menu{
+    display:none;position:fixed;inset:0;z-index:99;background:rgba(3,4,10,.98);backdrop-filter:blur(20px);
+    padding:110px 28px 40px;flex-direction:column;gap:6px;
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{padding:14px 6px;font-size:19px;font-family:var(--ff-display);border-bottom:1px solid var(--line);color:var(--ink);}
+  .mobile-menu .btn{margin-top:18px;}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:170px 0 90px;position:relative;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;}
+  @media(max-width:980px){ .hero-grid{grid-template-columns:1fr;} .hero-orbit-wrap{order:-1;height:340px;} }
+  .hero h1{font-size:clamp(38px,5.4vw,68px);line-height:1.06;margin-bottom:22px;}
+  .hero p.lead{color:var(--ink-dim);font-size:18px;max-width:520px;margin-bottom:36px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:46px;}
+
+  .search-bar{
+    display:flex;align-items:center;gap:10px;max-width:560px;
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:100px;
+    padding:8px 8px 8px 20px;backdrop-filter:blur(16px);
+    box-shadow:0 10px 40px rgba(0,0,0,.35);transition:border-color .25s, box-shadow .25s;
+  }
+  .search-bar:focus-within{border-color:rgba(124,58,237,.55);box-shadow:0 0 0 4px rgba(124,58,237,.12), 0 10px 40px rgba(0,0,0,.35);}
+  .search-bar svg{flex-shrink:0;color:var(--ink-faint);}
+  .search-bar input{
+    flex:1;background:none;border:none;outline:none;color:var(--ink);font-size:15px;padding:8px 0;
+  }
+  .search-bar input::placeholder{color:var(--ink-faint);}
+  .search-bar button{
+    background:linear-gradient(100deg,var(--blue),var(--purple));color:#fff;font-weight:600;font-size:14px;
+    padding:12px 22px;border-radius:100px;flex-shrink:0;
+  }
+  .search-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+  .search-tags span{
+    font-family:var(--ff-mono);font-size:11.5px;color:var(--ink-faint);border:1px solid var(--line);
+    padding:5px 12px;border-radius:100px;cursor:pointer;transition:all .2s;
+  }
+  .search-tags span:hover{color:var(--blue-2);border-color:rgba(56,189,248,.4);}
+
+  .hero-stats{display:flex;gap:36px;margin-top:44px;flex-wrap:wrap;}
+  .hero-stats div b{display:block;font-family:var(--ff-display);font-size:26px;color:var(--ink);}
+  .hero-stats div span{font-size:12.5px;color:var(--ink-faint);font-family:var(--ff-mono);letter-spacing:.03em;}
+
+  /* Signature orbit visual */
+  .hero-orbit-wrap{position:relative;height:520px;}
+  .orbit-core{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:104px;height:104px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #bda6ff, var(--purple) 55%, var(--blue) 100%);
+    box-shadow:0 0 70px rgba(124,58,237,.75), 0 0 140px rgba(47,123,255,.35), inset 0 0 30px rgba(255,255,255,.35);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--ff-display);font-weight:800;font-size:15px;letter-spacing:.02em;color:#fff;z-index:5;
+    animation:pulse-core 3.4s ease-in-out infinite;
+  }
+  @keyframes pulse-core{0%,100%{box-shadow:0 0 70px rgba(124,58,237,.75), 0 0 140px rgba(47,123,255,.35), inset 0 0 30px rgba(255,255,255,.35);}50%{box-shadow:0 0 95px rgba(124,58,237,.95), 0 0 170px rgba(47,123,255,.5), inset 0 0 30px rgba(255,255,255,.5);}}
+  .orbit-ring{position:absolute;top:50%;left:50%;border:1px dashed rgba(255,255,255,.14);border-radius:50%;transform:translate(-50%,-50%);}
+  .r1{width:270px;height:270px;}
+  .r2{width:400px;height:400px;}
+  .r3{width:520px;height:520px;}
+  @media(max-width:560px){.r1{width:200px;height:200px;}.r2{width:300px;height:300px;}.r3{width:390px;height:390px;}}
+  .orbit-spin{position:absolute;inset:0;animation:spin linear infinite;}
+  .spin-a{animation-duration:28s;}
+  .spin-b{animation-duration:42s;animation-direction:reverse;}
+  .spin-c{animation-duration:60s;}
+  @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+  .orbit-node{
+    position:absolute;display:flex;align-items:center;gap:7px;
+    background:var(--glass-strong);border:1px solid var(--glass-border);backdrop-filter:blur(10px);
+    padding:7px 13px 7px 9px;border-radius:100px;font-size:12px;font-weight:600;color:var(--ink);
+    box-shadow:0 6px 20px rgba(0,0,0,.4);white-space:nowrap;
+  }
+  .orbit-node i{width:7px;height:7px;border-radius:50%;background:var(--blue-2);box-shadow:0 0 8px var(--blue-2);}
+  .orbit-node:nth-child(odd) i{background:var(--purple-2);box-shadow:0 0 8px var(--purple-2);}
+
+  /* ---------- Category cards ---------- */
+  .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  @media(max-width:980px){.cat-grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:640px){.cat-grid{grid-template-columns:repeat(2,1fr);}}
+  .cat-card{
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:26px 20px;
+    backdrop-filter:blur(14px);transition:all .3s cubic-bezier(.2,.8,.2,1);cursor:pointer;position:relative;overflow:hidden;
+  }
+  .cat-card::before{
+    content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;
+    background:radial-gradient(180px 100px at 20% 0%, rgba(124,58,237,.35), transparent 70%);
+  }
+  .cat-card:hover{transform:translateY(-6px);border-color:rgba(124,58,237,.4);box-shadow:0 16px 40px rgba(0,0,0,.4);}
+  .cat-card:hover::before{opacity:1;}
+  .cat-icon{
+    width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+    background:linear-gradient(135deg, rgba(47,123,255,.18), rgba(124,58,237,.28));border:1px solid rgba(255,255,255,.08);
+    position:relative;z-index:1;
+  }
+  .cat-card h4{font-size:16px;margin-bottom:5px;position:relative;z-index:1;}
+  .cat-card span{font-size:12.5px;color:var(--ink-faint);position:relative;z-index:1;}
+
+  /* ---------- Tool cards ---------- */
+  .tool-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:32px;}
+  .filter-pills{display:flex;gap:8px;flex-wrap:wrap;}
+  .filter-pills button{
+    font-size:13px;font-weight:600;padding:9px 17px;border-radius:100px;border:1px solid var(--glass-border);color:var(--ink-dim);
+    transition:all .2s;background:var(--glass);
+  }
+  .filter-pills button.active,.filter-pills button:hover{color:#fff;border-color:transparent;background:linear-gradient(100deg,var(--blue),var(--purple));}
+
+  .tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media(max-width:980px){.tool-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:640px){.tool-grid{grid-template-columns:1fr;}}
+
+  .tool-card{
+    background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
+    border:1px solid var(--glass-border);border-radius:22px;padding:24px;position:relative;overflow:hidden;
+    backdrop-filter:blur(16px);transition:all .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .tool-card:hover{transform:translateY(-8px);border-color:rgba(56,189,248,.35);box-shadow:0 20px 50px rgba(0,0,0,.5), 0 0 40px rgba(124,58,237,.15);}
+  .tool-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+  .tool-logo{
+    width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+    font-family:var(--ff-display);font-weight:700;font-size:18px;color:#fff;flex-shrink:0;
+  }
+  .wish-btn{
+    width:36px;height:36px;border-radius:50%;background:var(--glass);border:1px solid var(--glass-border);
+    display:flex;align-items:center;justify-content:center;transition:all .2s;
+  }
+  .wish-btn svg{width:16px;height:16px;stroke:var(--ink-dim);fill:none;transition:.2s;}
+  .wish-btn.active svg{fill:var(--purple-2);stroke:var(--purple-2);}
+  .wish-btn:hover{border-color:rgba(168,85,247,.5);}
+
+  .tool-card h4{font-size:18px;margin-bottom:3px;}
+  .tool-cat-tag{font-family:var(--ff-mono);font-size:11px;color:var(--blue-2);letter-spacing:.04em;}
+  .stars{display:flex;align-items:center;gap:5px;margin:12px 0 10px;}
+  .stars svg{width:14px;height:14px;fill:#facc15;}
+  .stars span{font-size:12.5px;color:var(--ink-faint);margin-left:2px;}
+  .tool-desc{font-size:13.8px;color:var(--ink-dim);margin-bottom:18px;min-height:42px;}
+  .tool-foot{display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--line);}
+  .tool-price b{font-family:var(--ff-display);font-size:19px;}
+  .tool-price span{font-size:11.5px;color:var(--ink-faint);display:block;}
+  .buy-btn{
+    font-size:13px;font-weight:600;padding:10px 18px;border-radius:100px;color:#fff;
+    background:linear-gradient(100deg,var(--blue),var(--purple));transition:.25s;
+  }
+  .buy-btn:hover{box-shadow:0 8px 22px rgba(124,58,237,.45);transform:translateY(-1px);}
+  .tool-view-all{text-align:center;margin-top:40px;}
+
+  /* ---------- Why choose us ---------- */
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media(max-width:900px){.feat-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:600px){.feat-grid{grid-template-columns:1fr;}}
+  .feat-card{
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;padding:30px 26px;backdrop-filter:blur(14px);
+    transition:all .3s;
+  }
+  .feat-card:hover{border-color:rgba(56,189,248,.3);transform:translateY(-5px);}
+  .feat-icon{
+    width:50px;height:50px;border-radius:14px;margin-bottom:18px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,rgba(56,189,248,.18),rgba(168,85,247,.25));border:1px solid var(--glass-border);
+  }
+  .feat-card h4{font-size:17px;margin-bottom:8px;}
+  .feat-card p{font-size:13.8px;color:var(--ink-dim);}
+
+  /* ---------- How it works ---------- */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;position:relative;}
+  @media(max-width:900px){.steps{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.steps{grid-template-columns:1fr;}}
+  .step{position:relative;padding:30px 22px;background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;backdrop-filter:blur(14px);}
+  .step .num{
+    font-family:var(--ff-mono);font-size:13px;color:var(--blue-2);border:1px solid rgba(56,189,248,.35);
+    width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  }
+  .step h4{font-size:16.5px;margin-bottom:8px;}
+  .step p{font-size:13.5px;color:var(--ink-dim);}
+
+  /* ---------- Pricing ---------- */
+  .price-toggle{display:flex;align-items:center;justify-content:center;gap:14px;margin:0 auto 46px;}
+  .price-toggle span{font-size:14px;color:var(--ink-dim);font-weight:600;}
+  .price-toggle span.on{color:var(--ink);}
+  .toggle-switch{width:52px;height:28px;border-radius:100px;background:var(--glass-strong);border:1px solid var(--glass-border);position:relative;padding:3px;}
+  .toggle-dot{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purple));transition:.3s;}
+  .toggle-switch.yearly .toggle-dot{transform:translateX(24px);}
+  .save-badge{font-family:var(--ff-mono);font-size:11px;background:rgba(56,189,248,.14);color:var(--blue-2);padding:3px 9px;border-radius:100px;}
+
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch;}
+  @media(max-width:900px){.price-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto;}}
+  .price-card{
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:22px;padding:34px 28px;backdrop-filter:blur(14px);
+    display:flex;flex-direction:column;transition:.3s;position:relative;
+  }
+  .price-card.pop{
+    background:linear-gradient(180deg, rgba(124,58,237,.14), rgba(47,123,255,.06));border-color:rgba(168,85,247,.45);
+    box-shadow:0 20px 60px rgba(124,58,237,.25);transform:scale(1.03);
+  }
+  .price-card .badge{
+    position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+    background:linear-gradient(100deg,var(--blue),var(--purple));color:#fff;font-size:11.5px;font-weight:700;
+    padding:6px 16px;border-radius:100px;font-family:var(--ff-mono);letter-spacing:.03em;
+  }
+  .price-card h4{font-size:19px;margin-bottom:6px;}
+  .price-card .plan-desc{font-size:13.5px;color:var(--ink-dim);margin-bottom:22px;}
+  .price-amt{font-family:var(--ff-display);font-size:44px;margin-bottom:4px;}
+  .price-amt span{font-size:15px;color:var(--ink-faint);font-family:var(--ff-body);}
+  .price-card ul{margin:26px 0 30px;display:flex;flex-direction:column;gap:12px;flex:1;}
+  .price-card li{display:flex;align-items:flex-start;gap:10px;font-size:13.8px;color:var(--ink-dim);}
+  .price-card li svg{width:16px;height:16px;flex-shrink:0;margin-top:2px;stroke:var(--blue-2);}
+
+  /* ---------- Testimonials ---------- */
+  .testi-track{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media(max-width:980px){.testi-track{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:640px){.testi-track{grid-template-columns:1fr;}}
+  .testi-card{
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;padding:28px;backdrop-filter:blur(14px);
+  }
+  .testi-stars{display:flex;gap:4px;margin-bottom:16px;}
+  .testi-stars svg{width:14px;height:14px;fill:#facc15;}
+  .testi-card p.quote{font-size:14.5px;color:var(--ink-dim);margin-bottom:22px;}
+  .testi-person{display:flex;align-items:center;gap:12px;}
+  .testi-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--ff-display);font-weight:700;color:#fff;flex-shrink:0;}
+  .testi-person b{font-size:14px;display:block;}
+  .testi-person span{font-size:12px;color:var(--ink-faint);}
+
+  /* ---------- Blog ---------- */
+  .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media(max-width:900px){.blog-grid{grid-template-columns:1fr;max-width:520px;margin:0 auto;}}
+  .blog-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;overflow:hidden;backdrop-filter:blur(14px);transition:.3s;}
+  .blog-card:hover{transform:translateY(-6px);border-color:rgba(56,189,248,.3);}
+  .blog-thumb{height:170px;position:relative;overflow:hidden;}
+  .blog-thumb::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 20%, rgba(255,255,255,.18), transparent 60%);}
+  .blog-body{padding:22px;}
+  .blog-tag{font-family:var(--ff-mono);font-size:11px;color:var(--purple-2);letter-spacing:.04em;}
+  .blog-body h4{font-size:16px;margin:9px 0 10px;line-height:1.35;}
+  .blog-meta{font-size:12px;color:var(--ink-faint);display:flex;gap:10px;}
+
+  /* ---------- FAQ ---------- */
+  .faq-list{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+  .faq-item{background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;overflow:hidden;backdrop-filter:blur(14px);}
+  .faq-q{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;font-weight:600;font-size:15px;}
+  .faq-q svg{width:18px;height:18px;flex-shrink:0;transition:transform .3s;stroke:var(--blue-2);}
+  .faq-item.open .faq-q svg{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+  .faq-a p{padding:0 24px 20px;font-size:13.8px;color:var(--ink-dim);}
+
+  /* ---------- CTA banner ---------- */
+  .cta-banner{
+    border-radius:28px;padding:64px 40px;text-align:center;position:relative;overflow:hidden;
+    background:linear-gradient(120deg, rgba(47,123,255,.18), rgba(124,58,237,.28));border:1px solid rgba(255,255,255,.1);
+  }
+  .cta-banner h2{font-size:clamp(26px,3.6vw,38px);margin-bottom:14px;}
+  .cta-banner p{color:var(--ink-dim);margin-bottom:30px;max-width:520px;margin-left:auto;margin-right:auto;}
+  .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid var(--line);padding:70px 0 26px;}
+  .foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1.3fr;gap:30px;margin-bottom:50px;}
+  @media(max-width:900px){.foot-top{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.foot-top{grid-template-columns:1fr;}}
+  .foot-brand p{font-size:13.8px;color:var(--ink-dim);margin:16px 0 22px;max-width:280px;}
+  .foot-col h5{font-family:var(--ff-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px;}
+  .foot-col a{display:block;font-size:13.8px;color:var(--ink-dim);margin-bottom:11px;transition:color .2s;}
+  .foot-col a:hover{color:var(--blue-2);}
+  .news-box{display:flex;gap:8px;margin-top:14px;}
+  .news-box input{flex:1;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:11px 14px;color:var(--ink);font-size:13px;outline:none;}
+  .news-box input:focus{border-color:rgba(124,58,237,.5);}
+  .news-box button{background:linear-gradient(100deg,var(--blue),var(--purple));color:#fff;font-size:13px;font-weight:600;padding:11px 16px;border-radius:12px;}
+  .socials{display:flex;gap:10px;margin-top:18px;}
+  .socials a{width:36px;height:36px;border-radius:10px;background:var(--glass);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;}
+  .socials a:hover{border-color:rgba(56,189,248,.4);}
+  .socials svg{width:16px;height:16px;stroke:var(--ink-dim);}
+  .foot-bottom{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .foot-bottom p{font-size:12.5px;color:var(--ink-faint);}
+  .foot-legal{display:flex;gap:20px;flex-wrap:wrap;}
+  .foot-legal a{font-size:12.5px;color:var(--ink-faint);}
+  .foot-legal a:hover{color:var(--ink-dim);}
+  .badges{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+  .badges span{font-family:var(--ff-mono);font-size:10.5px;color:var(--ink-faint);border:1px solid var(--line);padding:5px 10px;border-radius:8px;}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  @media(prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-fixed"></div>
+<div class="grid-overlay"></div>
+<div class="noise"></div>
+
+<!-- ===================== NAV ===================== -->
+<header id="siteHeader">
+  <div class="wrap nav-inner">
+    <a href="#home" class="logo"><span class="logo-mark"></span> AI Tool Marketplace</a>
+    <nav class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#tools">AI Tools</a>
+      <a href="#categories">Categories</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#blog">Blog</a>
+      <a href="#about">About Us</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="#" class="link-btn">Login</a>
+      <a href="#" class="btn btn-ghost btn-sm">Sign Up</a>
+      <button class="burger" id="burgerBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home">Home</a>
+  <a href="#tools">AI Tools</a>
+  <a href="#categories">Categories</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#blog">Blog</a>
+  <a href="#about">About Us</a>
+  <a href="#contact">Contact</a>
+  <a href="#">Login</a>
+  <a href="#" class="btn btn-primary btn-block">Sign Up</a>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">1,200+ Verified AI Tools</div>
+      <h1>Discover, Compare &amp; Buy the <span class="grad-text">Best AI Tools</span></h1>
+      <p class="lead">One marketplace for every AI product you'll ever need — writing, image, video, code and more. Compare pricing, read real reviews, and buy with confidence.</p>
+      <div class="hero-ctas">
+        <a href="#tools" class="btn btn-primary">Explore Tools</a>
+        <a href="#pricing" class="btn btn-ghost">Get Started</a>
+      </div>
+
+      <form class="search-bar" id="heroSearch">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="heroSearchInput" placeholder="Search 1,200+ AI tools — try 'video editing' or 'chatbot'">
+        <button type="submit">Search</button>
+      </form>
+      <div class="search-tags">
+        <span data-q="Writing">Writing AI</span>
+        <span data-q="Image">Image Generation</span>
+        <span data-q="Chatbots">Chatbots</span>
+        <span data-q="Coding">Coding</span>
+        <span data-q="Automation">Automation</span>
+      </div>
+
+      <div class="hero-stats">
+        <div><b>1,200+</b><span>AI TOOLS LISTED</span></div>
+        <div><b>340K</b><span>MONTHLY BUYERS</span></div>
+        <div><b>4.8/5</b><span>AVG. USER RATING</span></div>
+        <div><b>60+</b><span>CATEGORIES</span></div>
+      </div>
+    </div>
+
+    <div class="hero-orbit-wrap">
+      <div class="orbit-ring r1"></div>
+      <div class="orbit-ring r2"></div>
+      <div class="orbit-ring r3"></div>
+      <div class="orbit-core">AI CORE</div>
+
+      <div class="orbit-spin spin-a">
+        <div class="orbit-node" style="top:0;left:50%;transform:translate(-50%,-135px) rotate(0deg);"><i></i>Writing</div>
+      </div>
+      <div class="orbit-spin spin-a" style="animation-delay:-14s;">
+        <div class="orbit-node" style="top:0;left:50%;transform:translate(-50%,-135px);"><i></i>Chatbots</div>
+      </div>
+      <div class="orbit-spin spin-b">
+        <div class="orbit-node" style="top:0;left:50%;transform:translate(-50%,-200px);"><i></i>Image Gen</div>
+      </div>
+      <div class="orbit-spin spin-b" style="animation-delay:-21s;">
+        <div class="orbit-node" style="top:0;left:50%;transform:translate(-50%,-200px);"><i></i>Automation</div>
+      </div>
+      <div class="orbit-spin spin-c">
+        <div class="orbit-node" style="top:0;left:50%;transform:translate(-50%,-260px);"><i></i>Video Editing</div>
+      </div>
+      <div class="orbit-spin spin-c" style="animation-delay:-30s;">
+        <div class="orbit-node" style="top:0;left:50%;transform:translate(-50%,-260px);"><i></i>Voice AI</div>
+      </div>
+      <div class="orbit-spin spin-c" style="animation-delay:-45s;">
+        <div class="orbit-node" style="top:0;left:50%;transform:translate(-50%,-260px);"><i></i>Coding</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CATEGORIES ===================== -->
+<section id="categories">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;">Browse by category</div>
+      <h2>Find the right AI tool for the job</h2>
+      <p>Eleven curated categories covering the entire AI toolchain, from first draft to full automation.</p>
+    </div>
+    <div class="cat-grid reveal" id="categoryGrid"></div>
+  </div>
+</section>
+
+<!-- ===================== FEATURED TOOLS ===================== -->
+<section id="tools">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;">Featured on the marketplace</div>
+      <h2>Top-rated AI tools, ready to buy</h2>
+      <p>Hand-picked, independently rated, and updated weekly.</p>
+    </div>
+    <div class="tool-toolbar reveal">
+      <div class="filter-pills" id="filterPills"></div>
+      <span style="font-size:13px;color:var(--ink-faint);font-family:var(--ff-mono);" id="resultCount">12 tools</span>
+    </div>
+    <div class="tool-grid reveal" id="toolGrid"></div>
+    <div class="tool-view-all reveal"><a href="#" class="btn btn-ghost">View All 1,200+ Tools</a></div>
+  </div>
+</section>
+
+<!-- ===================== WHY CHOOSE US ===================== -->
+<section id="why">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;">Why choose us</div>
+      <h2>Built for trust, speed and real comparisons</h2>
+      <p>We verify every listing so you can buy with confidence, not guesswork.</p>
+    </div>
+    <div class="feat-grid reveal">
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6l8-4z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h4>Verified &amp; vetted tools</h4>
+        <p>Every AI tool is manually reviewed for quality, security and real-world performance before it's listed.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/><path d="M7 14h4"/></svg></div>
+        <h4>Transparent pricing</h4>
+        <p>Compare real prices side by side — no hidden fees, no surprise upsells at checkout.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.8"><path d="M12 1v22M5 8h14M5 16h14"/></svg></div>
+        <h4>Instant, secure checkout</h4>
+        <p>Encrypted payments and instant delivery of licenses straight to your dashboard.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></div>
+        <h4>Real user reviews</h4>
+        <p>Ratings come exclusively from buyers who've actually used the tool — no fake reviews.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.8"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg></div>
+        <h4>Smart comparisons</h4>
+        <p>Side-by-side feature and pricing comparisons so you pick the right tool the first time.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8"><path d="M20 7 12 3 4 7v10l8 4 8-4V7z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg></div>
+        <h4>One dashboard, every tool</h4>
+        <p>Access every AI tool you've purchased, manage licenses, and track usage in a single place.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HOW IT WORKS ===================== -->
+<section id="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;">How it works</div>
+      <h2>From search to sign-in, in four steps</h2>
+      <p>The order below is the actual purchase flow — each step unlocks the next.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step"><div class="num">01</div><h4>Search &amp; filter</h4><p>Use the search bar or browse categories to shortlist tools that match your workflow.</p></div>
+      <div class="step"><div class="num">02</div><h4>Compare</h4><p>Check ratings, pricing tiers and features side by side before deciding.</p></div>
+      <div class="step"><div class="num">03</div><h4>Buy securely</h4><p>Checkout in seconds with encrypted payments and instant license delivery.</p></div>
+      <div class="step"><div class="num">04</div><h4>Launch from your dashboard</h4><p>Access, manage and track every tool you own from one personal dashboard.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRICING ===================== -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;">Marketplace membership</div>
+      <h2>Plans for buyers and sellers alike</h2>
+      <p>Browse free forever. Upgrade for deeper discounts, early access and premium support.</p>
+    </div>
+    <div class="price-toggle reveal">
+      <span class="on" id="lblMonthly">Monthly</span>
+      <button class="toggle-switch" id="priceToggle"><div class="toggle-dot"></div></button>
+      <span id="lblYearly">Yearly</span>
+      <span class="save-badge">Save 20%</span>
+    </div>
+    <div class="price-grid reveal">
+      <div class="price-card">
+        <h4>Explorer</h4>
+        <p class="plan-desc">For casual browsing and single purchases.</p>
+        <div class="price-amt"><span>$</span>0<span>/mo</span></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Browse the full marketplace</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Standard checkout</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Basic dashboard access</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Community support</li>
+        </ul>
+        <a href="#" class="btn btn-ghost btn-block">Get Started</a>
+      </div>
+      <div class="price-card pop">
+        <div class="badge">MOST POPULAR</div>
+        <h4>Pro Buyer</h4>
+        <p class="plan-desc">For freelancers and small teams buying often.</p>
+        <div class="price-amt" data-monthly="19" data-yearly="15"><span>$</span>19<span>/mo</span></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Everything in Explorer</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Up to 15% off every purchase</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Early access to new tools</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Priority checkout &amp; support</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Advanced dashboard &amp; wishlists</li>
+        </ul>
+        <a href="#" class="btn btn-primary btn-block">Get Started</a>
+      </div>
+      <div class="price-card">
+        <h4>Business</h4>
+        <p class="plan-desc">For teams standardizing on AI tooling.</p>
+        <div class="price-amt" data-monthly="49" data-yearly="39"><span>$</span>49<span>/mo</span></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Everything in Pro Buyer</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Team seats &amp; shared licenses</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Centralized billing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Dedicated account manager</li>
+        </ul>
+        <a href="#" class="btn btn-ghost btn-block">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section id="testimonials">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;">Customer stories</div>
+      <h2>Loved by builders, marketers &amp; teams</h2>
+      <p>Real reviews from verified buyers on the marketplace.</p>
+    </div>
+    <div class="testi-track reveal" id="testiTrack"></div>
+  </div>
+</section>
+
+<!-- ===================== BLOG ===================== -->
+<section id="blog">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;">From the blog</div>
+      <h2>Latest AI insights &amp; guides</h2>
+      <p>News, comparisons and tutorials from our editorial team.</p>
+    </div>
+    <div class="blog-grid reveal" id="blogGrid"></div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;">FAQ</div>
+      <h2>Frequently asked questions</h2>
+      <p>Can't find your answer? Reach out on the Contact page.</p>
+    </div>
+    <div class="faq-list reveal" id="faqList"></div>
+  </div>
+</section>
+
+<!-- ===================== CTA BANNER ===================== -->
+<section id="about">
+  <div class="wrap">
+    <div class="cta-banner reveal">
+      <h2>Ready to find your next AI tool?</h2>
+      <p>Join 340,000+ buyers comparing and purchasing AI tools every month on AI Tool Marketplace.</p>
+      <div class="cta-btns">
+        <a href="#tools" class="btn btn-primary">Explore Tools</a>
+        <a href="#" class="btn btn-ghost">Create Free Account</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="#home" class="logo"><span class="logo-mark"></span> AI Tool Marketplace</a>
+        <p>The premium marketplace to discover, compare and buy the best AI tools on the market.</p>
+        <div class="news-box">
+          <input type="email" placeholder="Your email address">
+          <button id="newsBtn">Subscribe</button>
+        </div>
+        <div class="socials">
+          <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/><path d="M10 9h4v2a4 4 0 0 1 4-2c3 0 4 2 4 5v7h-4v-6c0-1.5-.5-3-2-3s-2 1.5-2 3v6h-4z"/></svg></a>
+          <a href="#" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h5>Marketplace</h5>
+        <a href="#tools">AI Tools</a>
+        <a href="#categories">Categories</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#">Sell a Tool</a>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <a href="#about">About Us</a>
+        <a href="#blog">Blog</a>
+        <a href="#">Careers</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="foot-col">
+        <h5>Account</h5>
+        <a href="#">Login</a>
+        <a href="#">Sign Up</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Wishlist</a>
+      </div>
+      <div class="foot-col">
+        <h5>Legal</h5>
+        <a href="#">Terms of Service</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Refund Policy</a>
+        <a href="#">Cookie Policy</a>
+        <div class="badges">
+          <span>256-BIT SSL</span>
+          <span>PCI-DSS</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2026 AI Tool Marketplace. All rights reserved.</p>
+      <div class="foot-legal">
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+        <a href="#">Security</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ DATA ============ */
+const categories = [
+  {name:"Writing AI", count:"180 tools", icon:"M4 20h16M6 16l9-9 3 3-9 9H6v-3z", tag:"Writing"},
+  {name:"Image Generation", count:"142 tools", icon:"M4 5h16v14H4zM4 15l4-4 4 4 4-6 4 6", tag:"Image"},
+  {name:"Video Editing", count:"96 tools", icon:"M4 6h12v12H4zM16 9l4-3v12l-4-3", tag:"Video"},
+  {name:"Coding", count:"210 tools", icon:"M8 6 2 12l6 6M16 6l6 6-6 6", tag:"Coding"},
+  {name:"Marketing", count:"134 tools", icon:"M3 11l18-8-8 18-2-8-8-2z", tag:"Marketing"},
+  {name:"Productivity", count:"165 tools", icon:"M12 2v6l4 2M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z", tag:"Productivity"},
+  {name:"Voice AI", count:"78 tools", icon:"M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3zM5 11a7 7 0 0 0 14 0M12 18v4", tag:"Voice"},
+  {name:"Chatbots", count:"121 tools", icon:"M4 4h16v12H8l-4 4z", tag:"Chatbots"},
+  {name:"Automation", count:"108 tools", icon:"M12 2l2.5 5 5.5.8-4 4 1 5.5L12 15l-5 2.3 1-5.5-4-4 5.5-.8z", tag:"Automation"},
+  {name:"Business AI", count:"93 tools", icon:"M4 21V9l8-6 8 6v12M9 21v-6h6v6", tag:"Business"},
+  {name:"Education AI", count:"64 tools", icon:"M2 9l10-5 10 5-10 5-10-5zM6 12v5c3 2 9 2 12 0v-5", tag:"Education"},
+];
+
+const tools = [
+  {name:"Verbalis", cat:"Writing", tag:"Writing AI", price:"$19", period:"/mo", rating:4.9, reviews:"2.1k", desc:"Long-form writing assistant with brand voice memory and SEO scoring.", grad:["#2f7bff","#7c3aed"]},
+  {name:"Pixelforge", cat:"Image", tag:"Image Generation", price:"$29", period:"/mo", rating:4.8, reviews:"3.4k", desc:"Studio-grade image generation with consistent character and style control.", grad:["#a855f7","#38bdf8"]},
+  {name:"Cutstream", cat:"Video", tag:"Video Editing", price:"$39", period:"/mo", rating:4.7, reviews:"1.8k", desc:"AI video editor that auto-cuts, captions and reframes for every platform.", grad:["#38bdf8","#7c3aed"]},
+  {name:"CodeWeave", cat:"Coding", tag:"Coding", price:"$25", period:"/mo", rating:4.9, reviews:"5.2k", desc:"Context-aware coding copilot with repo-wide refactoring support.", grad:["#7c3aed","#2f7bff"]},
+  {name:"MarketPulse", cat:"Marketing", tag:"Marketing", price:"$45", period:"/mo", rating:4.6, reviews:"1.2k", desc:"Campaign generation and performance prediction for paid and organic.", grad:["#2f7bff","#a855f7"]},
+  {name:"FlowDesk", cat:"Productivity", tag:"Productivity", price:"$15", period:"/mo", rating:4.8, reviews:"2.9k", desc:"AI workspace that plans your day and drafts your meeting notes.", grad:["#38bdf8","#2f7bff"]},
+  {name:"EchoVox", cat:"Voice", tag:"Voice AI", price:"$22", period:"/mo", rating:4.7, reviews:"980", desc:"Ultra-realistic voice cloning and multilingual narration engine.", grad:["#a855f7","#2f7bff"]},
+  {name:"Chatterly", cat:"Chatbots", tag:"Chatbots", price:"$35", period:"/mo", rating:4.5, reviews:"1.5k", desc:"No-code chatbot builder with live handoff to human agents.", grad:["#7c3aed","#38bdf8"]},
+  {name:"FlowBot Ops", cat:"Automation", tag:"Automation", price:"$59", period:"/mo", rating:4.8, reviews:"1.1k", desc:"Visual automation builder connecting 400+ apps with AI decision nodes.", grad:["#2f7bff","#7c3aed"]},
+  {name:"Ledgerly AI", cat:"Business", tag:"Business AI", price:"$69", period:"/mo", rating:4.6, reviews:"720", desc:"Financial forecasting and reporting copilot for growing teams.", grad:["#a855f7","#7c3aed"]},
+  {name:"TutorMind", cat:"Education", tag:"Education AI", price:"$12", period:"/mo", rating:4.9, reviews:"3.0k", desc:"Personalized AI tutor that adapts lessons to each student's pace.", grad:["#38bdf8","#a855f7"]},
+  {name:"Scriptic", cat:"Writing", tag:"Writing AI", price:"$9", period:"/mo", rating:4.4, reviews:"640", desc:"Screenwriting and dialogue assistant built for film and games.", grad:["#2f7bff","#38bdf8"]},
+];
+
+const testimonials = [
+  {name:"Amara Chen", role:"Head of Growth, Nimbus", quote:"We shortlisted three chatbot tools in a single afternoon. The comparison view alone paid for our Pro plan.", init:"AC", grad:["#2f7bff","#7c3aed"]},
+  {name:"Diego Ramirez", role:"Freelance Video Editor", quote:"Bought Cutstream through the marketplace and had it running in my dashboard within two minutes.", init:"DR", grad:["#a855f7","#38bdf8"]},
+  {name:"Priya Nair", role:"Founder, Loomstack", quote:"The reviews are clearly from real buyers — it saved us from two tools that looked great on paper.", init:"PN", grad:["#38bdf8","#7c3aed"]},
+  {name:"Owen Bright", role:"Marketing Lead, Fernway", quote:"Transparent pricing and instant checkout. We standardized our whole team's AI stack here.", init:"OB", grad:["#7c3aed","#2f7bff"]},
+  {name:"Isla Whitfield", role:"Product Manager, Kindred", quote:"The dashboard makes managing five different AI licenses actually painless.", init:"IW", grad:["#2f7bff","#a855f7"]},
+  {name:"Marcus Bell", role:"Indie Developer", quote:"Found CodeWeave through category browsing — didn't know I needed it until I compared it side by side.", init:"MB", grad:["#38bdf8","#2f7bff"]},
+];
+
+const blogPosts = [
+  {tag:"Comparison", title:"Writing AI vs. traditional copywriting: what 2026 buyers should know", meta:"6 min read · Jun 2026", grad:["#2f7bff","#7c3aed"]},
+  {tag:"Guide", title:"How to choose the right image generation tool for your brand", meta:"8 min read · Jun 2026", grad:["#a855f7","#38bdf8"]},
+  {tag:"Trends", title:"Automation stacks are replacing entire ops teams — here's how", meta:"5 min read · May 2026", grad:["#38bdf8","#7c3aed"]},
+];
+
+const faqs = [
+  {q:"How does AI Tool Marketplace verify listed tools?", a:"Every submission goes through a manual review covering functionality, security practices, pricing accuracy and customer support quality before it's approved for listing."},
+  {q:"Can I get a refund if a tool doesn't work for me?", a:"Yes. Most listings include a 14-day refund window handled directly through your dashboard — see our Refund Policy for tool-specific terms."},
+  {q:"Do I need a subscription to buy tools?", a:"No. Browsing and buying is free on the Explorer plan. Paid plans unlock discounts, early access and priority support."},
+  {q:"How do I manage the tools I've purchased?", a:"All purchases appear instantly in your personal dashboard, where you can launch, manage licenses, and track renewal dates."},
+  {q:"Can I list my own AI tool for sale?", a:"Yes — creators can apply through the Sell a Tool page. Approved listings go live after our standard verification review."},
+];
+
+/* ============ RENDER ============ */
+const catGrid = document.getElementById('categoryGrid');
+catGrid.innerHTML = categories.map(c=>`
+  <div class="cat-card" data-tag="${c.tag}">
+    <div class="cat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.7"><path d="${c.icon}"/></svg></div>
+    <h4>${c.name}</h4>
+    <span>${c.count}</span>
+  </div>`).join('');
+
+function initials(name){return name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();}
+
+function renderTools(filter){
+  const grid = document.getElementById('toolGrid');
+  const list = filter==='All' ? tools : tools.filter(t=>t.tag===filter);
+  document.getElementById('resultCount').textContent = list.length + ' tools';
+  grid.innerHTML = list.map(t=>`
+    <div class="tool-card">
+      <div class="tool-top">
+        <div class="tool-logo" style="background:linear-gradient(135deg,${t.grad[0]},${t.grad[1]})">${initials(t.name)}</div>
+        <button class="wish-btn" onclick="this.classList.toggle('active')" aria-label="Add to wishlist">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+      </div>
+      <h4>${t.name}</h4>
+      <span class="tool-cat-tag">${t.tag.toUpperCase()}</span>
+      <div class="stars">
+        ${'<svg viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>'.repeat(5)}
+        <span>${t.rating} (${t.reviews})</span>
+      </div>
+      <p class="tool-desc">${t.desc}</p>
+      <div class="tool-foot">
+        <div class="tool-price"><b>${t.price}</b><span>billed${t.period}</span></div>
+        <button class="buy-btn">Buy Now</button>
+      </div>
+    </div>`).join('');
+}
+renderTools('All');
+
+const pillTags = ['All', ...new Set(tools.map(t=>t.tag))];
+const pillWrap = document.getElementById('filterPills');
+pillWrap.innerHTML = pillTags.map((t,i)=>`<button class="${i===0?'active':''}" data-tag="${t}">${t}</button>`).join('');
+pillWrap.addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(!btn) return;
+  pillWrap.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTools(btn.dataset.tag);
+  document.getElementById('tools').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+catGrid.addEventListener('click', e=>{
+  const card = e.target.closest('.cat-card'); if(!card) return;
+  const tag = card.dataset.tag;
+  const target = pillTags.includes(tag) ? tag : 'All';
+  pillWrap.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.tag===target));
+  renderTools(target);
+  document.getElementById('tools').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+document.getElementById('testiTrack').innerHTML = testimonials.map(t=>`
+  <div class="testi-card">
+    <div class="testi-stars">${'<svg viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>'.repeat(5)}</div>
+    <p class="quote">"${t.quote}"</p>
+    <div class="testi-person">
+      <div class="testi-avatar" style="background:linear-gradient(135deg,${t.grad[0]},${t.grad[1]})">${t.init}</div>
+      <div><b>${t.name}</b><span>${t.role}</span></div>
+    </div>
+  </div>`).join('');
+
+document.getElementById('blogGrid').innerHTML = blogPosts.map(b=>`
+  <div class="blog-card">
+    <div class="blog-thumb" style="background:linear-gradient(135deg,${b.grad[0]},${b.grad[1]})"></div>
+    <div class="blog-body">
+      <span class="blog-tag">${b.tag.toUpperCase()}</span>
+      <h4>${b.title}</h4>
+      <div class="blog-meta">${b.meta}</div>
+    </div>
+  </div>`).join('');
+
+document.getElementById('faqList').innerHTML = faqs.map((f,i)=>`
+  <div class="faq-item" data-i="${i}">
+    <div class="faq-q">${f.q} <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+    <div class="faq-a"><p>${f.a}</p></div>
+  </div>`).join('');
+document.getElementById('faqList').addEventListener('click', e=>{
+  const item = e.target.closest('.faq-item'); if(!item) return;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f=>{f.classList.remove('open'); f.querySelector('.faq-a').style.maxHeight=null;});
+  if(!wasOpen){
+    item.classList.add('open');
+    const a = item.querySelector('.faq-a');
+    a.style.maxHeight = a.scrollHeight + 'px';
+  }
+});
+
+/* ============ NAV BEHAVIOR ============ */
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll', ()=>{ header.classList.toggle('scrolled', window.scrollY>20); });
+
+const burger = document.getElementById('burgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', ()=>mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>mobileMenu.classList.remove('open')));
+
+/* ============ SEARCH ============ */
+document.getElementById('heroSearch').addEventListener('submit', e=>{
+  e.preventDefault();
+  const q = document.getElementById('heroSearchInput').value.trim().toLowerCase();
+  const match = pillTags.find(t=>t.toLowerCase().includes(q));
+  const target = match || 'All';
+  pillWrap.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.tag===target));
+  renderTools(target);
+  document.getElementById('tools').scrollIntoView({behavior:'smooth', block:'start'});
+});
+document.querySelectorAll('.search-tags span').forEach(s=>{
+  s.addEventListener('click', ()=>{
+    document.getElementById('heroSearchInput').value = s.dataset.q;
+    document.getElementById('heroSearch').dispatchEvent(new Event('submit'));
+  });
+});
+
+/* ============ PRICING TOGGLE ============ */
+const priceToggle = document.getElementById('priceToggle');
+let yearly = false;
+priceToggle.addEventListener('click', ()=>{
+  yearly = !yearly;
+  priceToggle.classList.toggle('yearly', yearly);
+  document.getElementById('lblMonthly').classList.toggle('on', !yearly);
+  document.getElementById('lblYearly').classList.toggle('on', yearly);
+  document.querySelectorAll('.price-amt[data-monthly]').forEach(el=>{
+    const val = yearly ? el.dataset.yearly : el.dataset.monthly;
+    el.innerHTML = `<span>$</span>${val}<span>/mo</span>`;
+  });
+});
+
+/* ============ NEWSLETTER ============ */
+document.getElementById('newsBtn').addEventListener('click', ()=>{
+  const input = document.querySelector('.news-box input');
+  if(input.value.trim()){ input.value=''; input.placeholder='Subscribed! Thank you.'; }
+});
+
+/* ============ SCROLL REVEAL ============ */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
